@@ -24,6 +24,7 @@ build_linux:
 build_win32:
   stage: build
   script:
+    - go get github.com/inconshreveable/mousetrap
     - GOOS=windows GOARCH=386 go build -o FileSwitcher.exe
   artifacts:
     paths:
