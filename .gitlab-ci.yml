@@ -1,24 +1,43 @@
 image: golang:1.7-alpine
 
 stages:
-  - install-environment
-  - build
+  - check-environment
   - test
+  - build
 
-install-go:
-  stage: install-environment
+check-go:
+  stage: check-environment
   script:
     - go version
     - echo $PATH
     - go env
     - which go
 
-build-my-project:
+build_linux:
   stage: build
   script:
-    - go build
+    - go build -o FileSwitcher
+  artifacts:
+    paths:
+      - FileSwitcher
 
-test-my-project:
+build_win32:
+  stage: build
+  script:
+    - GOOS=windows GOARCH=386 go build -o FileSwitcher.exe
+  artifacts:
+    paths:
+      - FileSwitcher.exe
+
+build_macos:
+  stage: build
+  script:
+    - GOOS=darwin GOARCH=amd64 go build -o FileSwitcher
+  artifacts:
+    paths:
+      - FileSwitcher
+
+test:
   stage: test
   script:
     - go test
