@@ -81,7 +81,7 @@ func TestIsSameFile(t *testing.T) {
 		t.Fatal("could not create hard link")
 	}
 	defer func() {
-		err = os.Remove(dist)
+		err = os.Remove(dist + ".txt")
 		if err != nil {
 			t.Fatal("could not delete hard link")
 		}
@@ -102,6 +102,15 @@ func TestIsSameFile(t *testing.T) {
 		if test.expected != result {
 			t.Errorf("expected %v, but %v", test.expected, result)
 		}
+	}
+
+	err = os.Rename(dist, dist+".txt")
+	if err != nil {
+		t.Fatal("could not rename")
+	}
+	result := isSameFile(source, dist+".txt")
+	if !result {
+		t.Errorf("expected true, but %v", result)
 	}
 }
 
